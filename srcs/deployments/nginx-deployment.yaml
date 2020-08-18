@@ -1,11 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-nginx
+  name: nginx
   labels:
     app: nginx
 spec:
-  replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: nginx
@@ -16,6 +17,5 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.14.2
-        ports:
-        - containerPort: 80
+        image: nginx_alpine
+        imagePullPolicy: Never
