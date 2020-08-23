@@ -19,10 +19,8 @@ END=$'\e[0m'
 
 #---------------------------------CLUSTER START---------------------------------#
 
-#minikube start --vm-driver=virtualbox --cpus=2 --memory=3000 --disk-size=10g --addons metrics-server --addons metallb --addons default-storageclass --addons storage-provisioner --addons dashboard --extra-config=kubelet.authentication-token-webhook=true
-
 minikube start	--vm-driver=virtualbox \
-				--cpus=2 --memory=3000 --disk-size=10g\
+				--cpus=2 --memory=3000 --disk-size=10g \
 				--addons metrics-server \
 				--addons metallb \
 				--addons default-storageclass \
@@ -30,12 +28,17 @@ minikube start	--vm-driver=virtualbox \
 				--addons dashboard \
   				--extra-config=kubelet.authentication-token-webhook=true
 
+#minikube start --vm-driver=virtualbox --cpus=2 --memory=3000 --disk-size=10g --addons metrics-server --addons metallb --addons default-storageclass --addons storage-provisioner --addons dashboard --extra-config=kubelet.authentication-token-webhook=true
+
 #----------------------------------BUILD AND DEPLOY----------------------------------#
-eval $(minikube docker-env)
+eval $(minikube docker-env --shell zsh)
 export MINIKUBE_IP=$(minikube ip)
 
-docker build -t nginx_alpine ./srcs/containers/nginx > /dev/null 2>>errlog.txt && { printf "[${GREEN}OK${END}]\n"; \
-kubectl apply -f ./srcs/deployments/nginx-deployment.yaml >> log.log 2>> errlog.txt; } || printf "[${RED}NO${END}]\n"
+kubectl apply -f ./srcs/metallb-config.yml
+kubectl apply -f ./srcs/deployments/nginx-deployment.yaml
+kubectl apply -f ./srcs/deployments/nginx-service.yml
+#docker build -t nginx_alpine ./srcs/containers/nginx > /dev/null 2>>errlog.txt && { printf "[${GREEN}OK${END}]\n"; \
+#kubectl apply -f ./srcs/deployments/nginx-deployment.yaml >> log.log 2>> errlog.txt; } || printf "[${RED}NO${END}]\n"
 
 # printf "Building and deploying ftps:\n"
 # docker build -t ftps_alpine ./srcs/ftps > /dev/null 2>>errlog.txt && { printf "[${GREEN}OK${END}]\n"; kubectl apply -f ./srcs/ftps.yaml >> log.log 2>> errlog.txt; } || printf "[${RED}NO${END}]\n"
