@@ -22,10 +22,10 @@ END=$'\e[0m'
 minikube start	--vm-driver=virtualbox \
 				--cpus=2 --memory=3000 --disk-size=10g \
 				--addons metrics-server \
-				--addons metallb \
 				--addons default-storageclass \
 				--addons storage-provisioner \
 				--addons dashboard \
+				--addons metallb \
   				--extra-config=kubelet.authentication-token-webhook=true
 
 #minikube start --vm-driver=virtualbox --cpus=2 --memory=3000 --disk-size=10g --addons metrics-server --addons metallb --addons default-storageclass --addons storage-provisioner --addons dashboard --extra-config=kubelet.authentication-token-webhook=true
@@ -34,9 +34,11 @@ minikube start	--vm-driver=virtualbox \
 eval $(minikube docker-env --shell zsh)
 export MINIKUBE_IP=$(minikube ip)
 
+docker build -t nginx_alpine ./srcs/containers/nginx
+
 kubectl apply -f ./srcs/metallb-config.yml
-kubectl apply -f ./srcs/deployments/nginx-deployment.yaml
-kubectl apply -f ./srcs/deployments/nginx-service.yml
+kubectl apply -f ./srcs/containers/nginx/nginx-deployment.yml
+kubectl apply -f ./srcs/containers/nginx/nginx-service.yml
 #docker build -t nginx_alpine ./srcs/containers/nginx > /dev/null 2>>errlog.txt && { printf "[${GREEN}OK${END}]\n"; \
 #kubectl apply -f ./srcs/deployments/nginx-deployment.yaml >> log.log 2>> errlog.txt; } || printf "[${RED}NO${END}]\n"
 

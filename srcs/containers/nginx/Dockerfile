@@ -1,18 +1,21 @@
-FROM alpine:3.7
+FROM alpine:3.12
 
-MAINTAINER tbruinem
+LABEL maintainer tbruinem
 
 RUN	apk update && \
 	apk upgrade && \
 	apk add openssl && \
-	#apk add openssh && \
-	#apk add supervisor && \
-	apk add nginx \
+	apk add nginx
 
-RUN adduser --disabled-password -g 'Nginx www user' -h /home/www/ nginx_admin
+RUN adduser -D -g 'www' www && \
+	mkdir /www && \
+	chown -R www:www /var/lib/nginx && \
+	chown -R www:www /www && \
+    mkdir -p /run/nginx
 
 COPY srcs/nginx.conf /etc/nginx/conf.d/default.conf
-COPY srcs/nginx.cert /etc/ssl/localhost.cert
+#COPY srcs/nginx.conf /etc/nginx/nginx.conf
+COPY srcs/nginx.cert /etc/ssl/localhost.crt
 COPY srcs/nginx.key /etc/ssl/localhost.key
 
 EXPOSE 80 443 22
