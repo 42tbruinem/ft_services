@@ -13,9 +13,9 @@ RUN adduser -D -g 'www' www && \
 	chown -R www:www /www && \
     mkdir -p /var/run/nginx
 
-#COPY srcs/nginx.conf /etc/nginx/conf.d/default.conf
+COPY srcs/nginx.conf /etc/nginx/conf.d/default.conf
 #COPY srcs/nginx.conf /etc/nginx/nginx.conf
-COPY srcs/etc_nginx.conf /etc/nginx/nginx.conf
+#COPY srcs/etc_nginx.conf /etc/nginx/nginx.conf
 COPY srcs/index.html /www/index.html
 COPY srcs/nginx.cert /etc/ssl/services.crt
 COPY srcs/nginx.key /etc/ssl/services.key

@@ -7,12 +7,14 @@ metadata:
   name: nginx-svc
 spec:
   ports:
-  - name: 80-80
+  - name: http
     port: 80
     protocol: TCP
     targetPort: 80
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 443
   selector:
     app: my-nginx
   type: LoadBalancer
-status:
-  loadBalancer: {}
