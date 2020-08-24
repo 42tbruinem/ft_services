@@ -2,22 +2,24 @@ FROM alpine:3.12
 
 LABEL maintainer tbruinem
 
-RUN	apk update && \
-	apk upgrade && \
-	apk add openssl && \
-	apk add nginx
+RUN	apk update --no-cache && \
+	apk upgrade --no-cache && \
+	apk add --no-cache openssl && \
+	apk add --no-cache nginx
 
 RUN adduser -D -g 'www' www && \
 	mkdir /www && \
 	chown -R www:www /var/lib/nginx && \
 	chown -R www:www /www && \
-    mkdir -p /run/nginx
+    mkdir -p /var/run/nginx
 
-COPY srcs/nginx.conf /etc/nginx/conf.d/default.conf
+#COPY srcs/nginx.conf /etc/nginx/conf.d/default.conf
 #COPY srcs/nginx.conf /etc/nginx/nginx.conf
-COPY srcs/nginx.cert /etc/ssl/localhost.crt
-COPY srcs/nginx.key /etc/ssl/localhost.key
+COPY srcs/etc_nginx.conf /etc/nginx/nginx.conf
+COPY srcs/index.html /www/index.html
+COPY srcs/nginx.cert /etc/ssl/services.crt
+COPY srcs/nginx.key /etc/ssl/services.key
 
 EXPOSE 80 443 22
 
-CMD /usr/sbin/nginx -g "daemon off;"
+CMD nginx -g "daemon off;"
