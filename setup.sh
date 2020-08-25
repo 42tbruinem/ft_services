@@ -57,6 +57,7 @@ minikube start	--vm-driver=virtualbox \
 eval $(minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)
 
+DEUBUG=""
 if [ $# -eq 1 ]
 then
 	DEBUG=1
@@ -67,7 +68,6 @@ fi
 #docker build -t nginx_alpine ./srcs/nginx
 
 kubectl apply -f ./srcs/metallb-config.yml
-echo "DEBUG = $DEBUG"
 start_app "nginx_alpine" "./srcs/nginx" "./srcs/nginx.yml" "$DEBUG"
 #kubectl apply -f ./srcs/nginx.yml
 #docker build -t nginx_alpine ./srcs/containers/nginx > /dev/null 2>>errlog.txt && { printf "[${GREEN}OK${END}]\n"; \
