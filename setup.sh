@@ -8,6 +8,21 @@ BLUE=$'\e[1;34m'
 MAGENTA=$'\e[1;35m'
 CYAN=$'\e[1;36m'
 END=$'\e[0m'
+
+#------------------------------------FUNCTIONS------------------------------------#
+
+# $1 = name, $2 = docker-location, $3 = yml-location
+start_app () {
+	echo "docker build -t $1 $2 > /dev/null 2>>errlog.txt && kubectl apply -f $3"
+	printf "$1: "
+	if [docker build -t $1 $2 > /dev/null 2>>errlog.txt && kubectl apply -f $3]
+	then
+		echo "[${GREEN}OK${END}]"
+	else
+		echo "[${RED}NO${END}]"
+	fi
+}
+
 #------------------------------------CLEANUP------------------------------------#
 #rm -rf ~/.minikube
 #mkdir -p ~/goinfre/.minikube
@@ -21,23 +36,25 @@ END=$'\e[0m'
 
 minikube start	--vm-driver=virtualbox \
 				--cpus=2 --memory=3000 --disk-size=10g \
+				--addons metallb \
+				--addons default-storageclass \
+				--addons dashboard \
+				--addons storage-provisioner \
 				--addons metrics-server \
   				--extra-config=kubelet.authentication-token-webhook=true
 
 #minikube start --vm-driver=virtualbox --cpus=2 --memory=3000 --disk-size=10g --addons metrics-server --addons metallb --addons default-storageclass --addons storage-provisioner --addons dashboard --extra-config=kubelet.authentication-token-webhook=true
 
 #----------------------------------BUILD AND DEPLOY----------------------------------#
-minikube addons enable metallb >> log.log 2>>errlog.txt && sleep 2 && kubectl apply -f ./srcs/metallb-config.yml >> log.log 2>>errlog.txt
-minikube addons enable default-storageclass >> log.log 2>> errlog.txt
-minikube addons enable storage-provisioner >> log.log 2>> errlog.txt
-minikube addons enable dashboard >> log.log 2>> errlog.txt
-eval $(minikube docker-env --shell zsh)
+sleep 1
+eval $(minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)
 
-docker build -t nginx_alpine ./srcs/containers/nginx
+#docker build -t nginx_alpine ./srcs/nginx
 
-kubectl apply -f ./srcs/containers/nginx/nginx-deployment.yml
-kubectl apply -f ./srcs/containers/nginx/nginx-service.yml
+kubectl apply -f ./srcs/metallb-config.yml
+start_app "nginx_alpine" "./srcs/nginx" "./srcs/nginx.yml"
+#kubectl apply -f ./srcs/nginx.yml
 #docker build -t nginx_alpine ./srcs/containers/nginx > /dev/null 2>>errlog.txt && { printf "[${GREEN}OK${END}]\n"; \
 #kubectl apply -f ./srcs/deployments/nginx-deployment.yaml >> log.log 2>> errlog.txt; } || printf "[${RED}NO${END}]\n"
 
