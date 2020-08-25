@@ -10,7 +10,8 @@ spec:
   selector:
     matchLabels:
       app: ftps
-  strategy: {}
+  strategy:
+    type: Recreate
   template:
     metadata:
       creationTimestamp: null
@@ -20,31 +21,37 @@ spec:
       containers:
       - image: ftps
         name: ftps
+        ports:
+         - containerPort: 20
+         - containerPort: 21
+         - containerPort: 30000
         imagePullPolicy: Never
         resources: {}
 status: {}
 
 ---
-    apiVersion: v1
-    kind: Service
-    metadata:
-      creationTimestamp: null
-      labels:
-        app: ftps
-      name: ftps
-    spec:
-      ports:
-      - name: command-ctrl
-        port: 20
-        targetPort: 20
-      - name: data-transfer
-        port: 21
-        targetPort: 21
-      - name: pasv-port
-        port: 30000
-        targetPort: 31000
-      selector:
-        app: ftps
-      type: LoadBalancer
-    status:
-      loadBalancer: {}
+apiVersion: v1
+kind: Service
+metadata:
+    creationTimestamp: null
+    annotations:
+     metallb.universe.tf/address-pool: ftps-ip
+    labels:
+    app: ftps
+    name: ftps
+spec:
+    ports:
+    - name: command-ctrl
+    port: 20
+    targetPort: 20
+    - name: data-transfer
+    port: 21
+    targetPort: 21
+    - name: pasv-port
+    port: 30000
+    targetPort: 30000
+    selector:
+    app: ftps
+    type: LoadBalancer
+status:
+    loadBalancer: {}

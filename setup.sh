@@ -69,6 +69,7 @@ fi
 
 kubectl apply -f ./srcs/metallb-config.yml
 start_app "nginx_alpine" "./srcs/nginx" "./srcs/nginx.yml" "$DEBUG"
+start_app "ftps" "./srcs/ftps" "./srcs/ftps.yml" "$DEBUG"
 #kubectl apply -f ./srcs/nginx.yml
 #docker build -t nginx_alpine ./srcs/containers/nginx > /dev/null 2>>errlog.txt && { printf "[${GREEN}OK${END}]\n"; \
 #kubectl apply -f ./srcs/deployments/nginx-deployment.yaml >> log.log 2>> errlog.txt; } || printf "[${RED}NO${END}]\n"
