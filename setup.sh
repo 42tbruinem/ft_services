@@ -11,10 +11,15 @@ END=$'\e[0m'
 
 #------------------------------------FUNCTIONS------------------------------------#
 
-# $1 = name, $2 = docker-location, $3 = yml-location
+# $1 = name, $2 = docker-location, $3 = yml-location, $4 = DEBUG
 start_app () {
 	printf "$1: "
-	docker build -t $1 $2 > /dev/null 2>>errlog.txt && kubectl apply -f $3 > /dev/null 2>>errlog.txt
+	if [ $4 -eq 0 ]
+	then
+		docker build -t $1 $2 > /dev/null 2>>errlog.txt && kubectl apply -f $3 > /dev/null 2>>errlog.txt
+	else
+		docker build -t $1 $2 && kubectl apply -f $3
+	fi
     RET=$?
 	if [ $RET -eq 1 ]
 	then
@@ -25,6 +30,7 @@ start_app () {
 }
 
 #------------------------------------CLEANUP------------------------------------#
+
 #rm -rf ~/.minikube
 #mkdir -p ~/goinfre/.minikube
 #ln -s ~/goinfre/.minikube ~/.minikube
@@ -51,10 +57,18 @@ minikube start	--vm-driver=virtualbox \
 eval $(minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)
 
+if [ $# -eq 1 ]
+then
+	DEBUG=1
+else
+	DEBUG=0
+fi
+
 #docker build -t nginx_alpine ./srcs/nginx
 
 kubectl apply -f ./srcs/metallb-config.yml
-start_app "nginx_alpine" "./srcs/nginx" "./srcs/nginx.yml"
+echo "DEBUG = $DEBUG"
+start_app "nginx_alpine" "./srcs/nginx" "./srcs/nginx.yml" "$DEBUG"
 #kubectl apply -f ./srcs/nginx.yml
 #docker build -t nginx_alpine ./srcs/containers/nginx > /dev/null 2>>errlog.txt && { printf "[${GREEN}OK${END}]\n"; \
 #kubectl apply -f ./srcs/deployments/nginx-deployment.yaml >> log.log 2>> errlog.txt; } || printf "[${RED}NO${END}]\n"
