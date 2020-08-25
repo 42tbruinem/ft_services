@@ -13,13 +13,14 @@ END=$'\e[0m'
 
 # $1 = name, $2 = docker-location, $3 = yml-location
 start_app () {
-	echo "docker build -t $1 $2 > /dev/null 2>>errlog.txt && kubectl apply -f $3"
 	printf "$1: "
-	if [docker build -t $1 $2 > /dev/null 2>>errlog.txt && kubectl apply -f $3]
+	docker build -t $1 $2 > /dev/null 2>>errlog.txt && kubectl apply -f $3 > /dev/null 2>>errlog.txt
+    RET=$?
+	if [ $RET -eq 1 ]
 	then
-		echo "[${GREEN}OK${END}]"
-	else
 		echo "[${RED}NO${END}]"
+	else
+		echo "[${GREEN}OK${END}]"
 	fi
 }
 
@@ -46,7 +47,7 @@ minikube start	--vm-driver=virtualbox \
 #minikube start --vm-driver=virtualbox --cpus=2 --memory=3000 --disk-size=10g --addons metrics-server --addons metallb --addons default-storageclass --addons storage-provisioner --addons dashboard --extra-config=kubelet.authentication-token-webhook=true
 
 #----------------------------------BUILD AND DEPLOY----------------------------------#
-sleep 1
+
 eval $(minikube docker-env)
 export MINIKUBE_IP=$(minikube ip)
 
