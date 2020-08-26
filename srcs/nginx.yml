@@ -20,7 +20,7 @@ spec:
         app: my-nginx
     spec:
       containers:
-      - image: nginx_alpine
+      - image: nginx
         name: nginx-alpine
         imagePullPolicy: Never
         resources: {}

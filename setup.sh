@@ -68,8 +68,12 @@ fi
 #docker build -t nginx_alpine ./srcs/nginx
 
 kubectl apply -f ./srcs/metallb-config.yml
-start_app "nginx_alpine" "./srcs/nginx" "./srcs/nginx.yml" "$DEBUG"
+start_app "nginx" "./srcs/nginx" "./srcs/nginx.yml" "$DEBUG"
 start_app "ftps" "./srcs/ftps" "./srcs/ftps.yml" "$DEBUG"
+start_app "mysql" "./srcs/mysql" "./srcs/mysql.yml" "$DEBUG"
+start_app "wordpress" "./srcs/wordpress" "./srcs/wordpress.yml" "$DEBUG"
+start_app "phpmyadmin" "./srcs/phpmyadmin" "./srcs/phpmyadmin.yml" "$DEBUG"
+
 #kubectl apply -f ./srcs/nginx.yml
 #docker build -t nginx_alpine ./srcs/containers/nginx > /dev/null 2>>errlog.txt && { printf "[${GREEN}OK${END}]\n"; \
 #kubectl apply -f ./srcs/deployments/nginx-deployment.yaml >> log.log 2>> errlog.txt; } || printf "[${RED}NO${END}]\n"
@@ -99,7 +103,7 @@ start_app "ftps" "./srcs/ftps" "./srcs/ftps.yml" "$DEBUG"
 # WORDPRESS_IP=`kubectl get services | awk '/wordpress-svc/ {print $4}'`
 # PHPMYADMIN_IP=`kubectl get services | awk '/phpmyadmin-svc/ {print $4}'`
 # GRAFANA_IP=`kubectl get services | awk '/grafana-svc/ {print $4}'`
-# sed -e "s/GRAFANA_IP/$GRAFANA_IP/g" -e "s/WORDPRESS_IP/$WORDPRESS_IP/g" -e "s/PHPMYADMIN_IP/$PHPMYADMIN_IP/g" srcs/nginx/homepage-pde-bakk/beforesed.html > srcs/nginx/homepage-pde-bakk/index.html
+# sed -e "s/GRAFANA_IP/$GRAFANA_IP/g" -e "s/WORDPRESS_IP/$WORDPRESS_IP/g" -e "s/PHPMYADMIN_IP/$PHPMYADMIN_IP/g" srcs/nginx/homepage-admin/beforesed.html > srcs/nginx/homepage-admin/index.html
 
 # printf "Building and deploying nginx:\t\t"
 # docker build -t nginx_alpine ./srcs/nginx > /dev/null 2>>errlog.txt && printf "[${GREEN}OK${END}]\n" || printf "[${RED}NO${END}]\n"; kubectl apply -f ./srcs/nginx.yaml >> log.log 2>> errlog.txt
