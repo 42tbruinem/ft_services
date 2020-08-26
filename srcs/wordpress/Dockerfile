@@ -1,8 +1,5 @@
-FROM alpine
+FROM alpine:3.12
 
-# Fix this error
-# nginx: [emerg] open() "/run/nginx/nginx.pid" failed (2: No such file or directory)
-# simply by running:
 RUN mkdir -p /run/nginx
 
 RUN apk update \
@@ -16,17 +13,16 @@ RUN apk add nginx
 RUN adduser -D -g 'www' www
 RUN mkdir /www
 
-COPY wp-config.php /tmp/wp-config.php
-COPY wpinstall.sh /tmp/wpinstall.sh
-COPY ft_services.jpg /tmp/ft_services.jpg
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY ./srcs/wp-config.php /tmp/wp-config.php
+COPY ./srcs/wpinstall.sh /tmp/wpinstall.sh
+COPY ./srcs/nginx.conf /etc/nginx/nginx.conf
+COPY ./srcs/supervisord.conf /etc/supervisord.conf
+COPY ./srcs/start.sh /tmp/start.sh
 
 # Make sure that our ssh daemon keeps restarting
 RUN	apk add supervisor
-COPY supervisord.conf /etc/supervisord.conf
 
 # Here we go again
-COPY start.sh /tmp/start.sh
 RUN chmod +x /tmp/wpinstall.sh
 RUN chmod +x /tmp/start.sh
 EXPOSE 5050

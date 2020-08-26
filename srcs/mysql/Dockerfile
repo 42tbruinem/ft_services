@@ -1,10 +1,11 @@
-FROM alpine
+FROM alpine:3.12
 
 RUN	apk add mysql mysql-client
 
-COPY startup.sh /tmp/startup.sh
+COPY ./srcs/startup.sh /tmp/startup.sh
+COPY ./srcs/my.cnf /etc/
+
 RUN chmod +x /tmp/startup.sh
-COPY my.cnf /etc/
 VOLUME /var/lib/mysql
 
 ENTRYPOINT ["/bin/sh", "/tmp/startup.sh"]

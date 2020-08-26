@@ -32,6 +32,8 @@ status: {}
   apiVersion: v1
   kind: Service
   metadata:
+    annotations:
+      metallb.universe.tf/address-pool: default
     creationTimestamp: null
     labels:
       app: my-nginx
