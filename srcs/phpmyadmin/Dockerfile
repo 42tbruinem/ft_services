@@ -14,16 +14,18 @@ RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.1/phpMyAdmin-5.0.1-english.
 
 RUN adduser -D -g 'www' www
 
-COPY ./srcs/config.inc.php /www
+RUN mkdir -p /tmp
+
+COPY ./srcs/config.inc.php /tmp
 COPY ./srcs/nginx.conf /etc/nginx/nginx.conf
 COPY ./srcs/nginx.conf /etc/nginx.conf
 COPY ./srcs/supervisord.conf /etc/supervisord.conf
-COPY ./srcs/setup.sh .
+COPY ./srcs/setup.sh ./tmp
 
 # Make sure that our ssh daemon keeps restarting
 
-RUN chmod +x setup.sh
+RUN chmod +x /tmp/setup.sh
 
 EXPOSE 5000
 
-CMD [ "sh", "-c", "/tmp/start.sh ; /usr/bin/supervisord -c /etc/supervisord.conf" ]
+CMD [ "sh", "-c", "/tmp/setup.sh ; /usr/bin/supervisord -c /etc/supervisord.conf" ]

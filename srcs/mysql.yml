@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: mysql
+  name: mysql-svc
   labels:
     app: mysql
 spec:
@@ -9,7 +9,7 @@ spec:
   selector:
     app: mysql
   ports:
-  - name: mysql
+  - name: mysql-port
     port: 3306
 
 ---
@@ -31,7 +31,7 @@ spec:
         app: mysql
     spec:
       containers:
-      - name: mysql
+      - name: mysql-host
         image: mysql
         imagePullPolicy: IfNotPresent
         env:
