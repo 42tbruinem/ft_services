@@ -4,6 +4,7 @@ RUN	apk add mysql mysql-client
 
 COPY ./srcs/startup.sh /tmp/startup.sh
 COPY ./srcs/my.cnf /etc/
+COPY ./srcs/create_tables.sql /tmp/
 
 RUN chmod +x /tmp/startup.sh
 VOLUME /var/lib/mysql
