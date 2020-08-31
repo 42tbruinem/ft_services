@@ -48,9 +48,10 @@ else
 fi
 
 kubectl apply -f ./srcs/metallb-config.yml
-start_app "nginx" "./srcs/nginx" "./srcs/nginx.yml" "$DEBUG"
-start_app "ftps" "./srcs/ftps" "./srcs/ftps.yml" "$DEBUG"
-start_app "mysql" "./srcs/mysql" "./srcs/mysql.yml" "$DEBUG"
-start_app "wordpress" "./srcs/wordpress" "./srcs/wordpress.yml" "$DEBUG"
-start_app "phpmyadmin" "./srcs/phpmyadmin" "./srcs/phpmyadmin.yml" "$DEBUG"
-start_app "influxdb" "./srcs/influxdb" "./srcs/influxdb.yml" "$DEBUG"
+# start_app "nginx" "./srcs/nginx" "./srcs/nginx.yml" "$DEBUG"
+# start_app "ftps" "./srcs/ftps" "./srcs/ftps.yml" "$DEBUG"
+# start_app "mysql" "./srcs/mysql" "./srcs/mysql.yml" "$DEBUG"
+# start_app "wordpress" "./srcs/wordpress" "./srcs/wordpress.yml" "$DEBUG"
+# start_app "phpmyadmin" "./srcs/phpmyadmin" "./srcs/phpmyadmin.yml" "$DEBUG"
+# start_app "influxdb" "./srcs/influxdb" "./srcs/influxdb.yml" "$DEBUG"
+start_app "telegraf" "./srcs/telegraf" "./srcs/telegraf.yml" "$DEBUG"
