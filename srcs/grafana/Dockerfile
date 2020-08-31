@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.12
 
 WORKDIR /usr/share/grafana
 
@@ -8,7 +8,7 @@ RUN apk update && \
 
 COPY datasource/datasource.yaml /usr/share/grafana/conf/provisioning/datasources/
 
-RUN mkdir /usr/share/grafana/conf/provisioning/dashboards/mine
+RUN mkdir -p /usr/share/grafana/conf/provisioning/dashboards/mine
 COPY dashboards/*.json /usr/share/grafana/conf/provisioning/dashboards/mine/
 COPY dashboards/sample.yaml /usr/share/grafana/conf/provisioning/dashboards/
 
