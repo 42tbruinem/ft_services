@@ -15,7 +15,7 @@
 	"editable": true,
 	"gnetId": null,
 	"graphTooltip": 0,
-	"id": 1,
+	"id": null,
 	"links": [],
 	"panels": [
 	  {
@@ -100,7 +100,7 @@
 			  {
 				"key": "deployment_name",
 				"operator": "=",
-				"value": "influxdb-deployment"
+				"value": "grafana-deployment"
 			  }
 			]
 		  }
@@ -109,7 +109,7 @@
 		"timeFrom": null,
 		"timeRegions": [],
 		"timeShift": null,
-		"title": "influxdb",
+		"title": "grafana",
 		"tooltip": {
 		  "shared": true,
 		  "sort": 0,
@@ -172,7 +172,7 @@
 	  ]
 	},
 	"timezone": "",
-	"title": "New dashboard Copy",
-	"uid": "3mfdEnvMz",
+	"title": "Grafana Dashboard",
+	"uid": null,
 	"version": 2
   }

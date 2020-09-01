@@ -3,28 +3,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
-    app: my-nginx
-  name: my-nginx
+    app: nginx
+  name: nginx-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-nginx
-  strategy: {}
+      app: nginx
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        app: my-nginx
+        app: nginx
     spec:
       containers:
       - image: nginx
         name: nginx-alpine
         imagePullPolicy: Never
-        resources: {}
-status: {}
 
 ---
 
@@ -36,7 +31,7 @@ status: {}
       metallb.universe.tf/address-pool: default
     creationTimestamp: null
     labels:
-      app: my-nginx
+      app: nginx
     name: nginx-svc
   spec:
     ports:
@@ -47,5 +42,5 @@ status: {}
       port: 443
       targetPort: 443
     selector:
-      app: my-nginx
+      app: nginx
     type: LoadBalancer

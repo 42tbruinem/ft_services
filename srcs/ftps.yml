@@ -1,10 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: ftps
-  name: ftps
+  name: ftps-deployment
 spec:
   replicas: 1
   selector:
@@ -14,32 +13,22 @@ spec:
     type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: ftps
     spec:
       containers:
       - image: ftps
         name: ftps
-        ports:
-         - containerPort: 20
-         - containerPort: 21
-         - containerPort: 30000
         imagePullPolicy: Never
-        resources: {}
-status: {}
-
 ---
-
     apiVersion: v1
     kind: Service
     metadata:
-      creationTimestamp: null
       annotations:
         metallb.universe.tf/address-pool: ftps-ip
       labels:
         app: ftps
-      name: ftps
+      name: ftps-svc
     spec:
       ports:
       - name: command-ctrl
@@ -54,5 +43,3 @@ status: {}
       selector:
         app: ftps
       type: LoadBalancer
-    status:
-      loadBalancer: {}

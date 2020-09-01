@@ -4,13 +4,20 @@ LABEL maintainer tbruinem
 
 RUN apk update --no-cache && \
 	apk upgrade --no-cache && \
+	apk add --no-cache curl && \
 	apk add grafana --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/
 
-RUN sed -i "/admin_user = /c\admin_user = \$GF_SECURITY_ADMIN_USER" /usr/share/grafana/conf/defaults.ini && \
-	sed -i "/admin_password = /c\admin_password = \$GF_SECURITY_ADMIN_PASSWORD" /usr/share/grafana/conf/defaults.ini
+RUN mkdir -p /var/lib/grafana/dashboards
+
+COPY ./srcs/dashboards.yaml /usr/share/grafana/conf/provisioning/dashboards
+COPY ./srcs/datasources.yaml /usr/share/grafana/conf/provisioning/datasources
+COPY ./srcs/dashboards/* /var/lib/grafana/dashboards/
+COPY ./srcs/create_user.sh /create_user.sh
+
+RUN chmod +x /create_user.sh
 
 WORKDIR /usr/share/grafana
 
 EXPOSE 3000
 
-CMD [ "grafana-server", "web" ] 
+CMD [ "grafana-server" ]
