@@ -37,7 +37,6 @@ start_app () {
 #----------------------------------BUILD AND DEPLOY----------------------------------#
 
 eval $(minikube docker-env)
-export MINIKUBE_IP=$(minikube ip)
 
 DEUBUG=""
 if [ $# -eq 1 ]

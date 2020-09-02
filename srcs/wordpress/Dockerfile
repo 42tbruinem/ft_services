@@ -23,6 +23,7 @@ COPY ./srcs/start.sh /tmp/start.sh
 RUN	apk add supervisor
 
 # Here we go again
+RUN sed -i 's/;daemonize = yes/daemonize = no/g' /etc/php7/php-fpm.conf
 RUN chmod +x /tmp/wpinstall.sh
 RUN chmod +x /tmp/start.sh
 EXPOSE 5050

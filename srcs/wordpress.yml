@@ -1,15 +1,11 @@
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: Secret
 metadata:
-  name: wordpress-pv-claim
-  labels:
-    app: wordpress
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
+  name: wordpress-secret
+type: Opaque
+stringData:
+  WP_USER: "wp"
+  WP_PASSWORD: "pass"
 ---
 apiVersion: v1
 kind: Service
@@ -48,22 +44,11 @@ spec:
       containers:
       - name: wordpress
         image: wordpress
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: DB_NAME
-          value: wordpress
-        - name: DB_USER
-          value: mysql
-        - name: DB_PASS
-          value: pass
-        - name: DB_HOST
-          value: mysql-svc
+        imagePullPolicy: Never
+        envFrom:
+          - secretRef:
+              name: mysql-secret
+          - secretRef:
+              name: wordpress-secret
         ports:
           - containerPort: 5050
-        volumeMounts:
-        - name: wordpress-persistent-storage
-          mountPath: /www
-      volumes:
-      - name: wordpress-persistent-storage
-        persistentVolumeClaim:
-          claimName: wordpress-pv-claim

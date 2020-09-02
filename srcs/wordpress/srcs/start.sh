@@ -2,13 +2,11 @@ curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.pha
 chown -R www:www /var/lib/nginx
 chown -R www:www /www
 
-cp /tmp/wp-config.php /www/wp-config.php
-
-envsubst '${WORDPRESS_SVC_SERVICE_HOST} ${WORDPRESS_SVC_SERVICE_PORT} ${DB_NAME} ${DB_USER} ${DB_PASS} ${DB_HOST}' < /tmp/wp-config.php > /www/wp-config.php
+envsubst '${MYSQL_DB_NAME} ${MYSQL_USER} ${MYSQL_PASSWORD} ${MYSQL_DB_HOST}' < /tmp/wp-config.php > /www/wp-config.php
 rm /tmp/wp-config.php
 chmod +x wp-cli.phar
 mv wp-cli.phar /usr/local/bin/wp
 
 cd /www
-su -c "/tmp/wpinstall.sh" - www
+su www -c "/tmp/wpinstall.sh"
 rm -rf /root/.wp-cli

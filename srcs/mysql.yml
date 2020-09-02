@@ -7,6 +7,7 @@ stringData:
   MYSQL_DB_NAME: wordpress
   MYSQL_USER: mysql
   MYSQL_PASSWORD: pass
+  MYSQL_DB_HOST: mysql-svc
   MYSQL_HOME: /etc/
 ---
 kind: Service
@@ -53,16 +54,34 @@ spec:
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: mysql-pv-claim
-
+          claimName: mysql-claim
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-data
+  labels:
+    app: mysql
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/mysql-data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql-pv-claim
+  name: mysql-claim
   labels:
     app: mysql
 spec:
+  selector:
+    matchLabels: 
+      app: mysql
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:

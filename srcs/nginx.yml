@@ -1,5 +1,3 @@
-#---------DEPLOYMENT---------
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,16 +18,12 @@ spec:
       - image: nginx
         name: nginx-alpine
         imagePullPolicy: Never
-
 ---
-
-#---------SERVICE---------
   apiVersion: v1
   kind: Service
   metadata:
     annotations:
       metallb.universe.tf/address-pool: default
-    creationTimestamp: null
     labels:
       app: nginx
     name: nginx-svc

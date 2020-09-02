@@ -26,19 +26,9 @@ data:
       url = "https://kubernetes.default.svc:443/"
       namespace = "default"
       bearer_token = "/var/run/secrets/kubernetes.io/serviceaccount/token"
-      resource_include = [ "deployments" ]
+      resource_include = [ "deployments", "pods" ]
       tls_ca = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
       insecure_skip_verify = false
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: influxdb-secret
-type: Opaque
-stringData:
-  INFLUX_URL: http://influxdb-svc:8086
-  INFLUX_USER: admin
-  INFLUX_PASSWORD: pass
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -87,8 +77,12 @@ metadata:
 rules:
 - apiGroups:
   - apps
+  - ""
+  - metrics.k8s.io
   resources:
   - deployments
+  - pods
+  - services
   verbs:
   - get
   - list
