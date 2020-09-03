@@ -4,7 +4,9 @@ LABEL maintainer tbruinem
 
 RUN	apk update --no-cache && \
 	apk upgrade --no-cache && \
-	apk add --no-cache nginx
+	apk add --no-cache nginx \
+	openssh \
+	supervisor
 
 RUN adduser -D -g 'www' www && \
 	mkdir /www && \
@@ -16,7 +18,13 @@ COPY srcs/nginx.conf /etc/nginx/conf.d/default.conf
 COPY srcs/index.html /www/index.html
 COPY srcs/nginx.cert /etc/ssl/services.crt
 COPY srcs/nginx.key /etc/ssl/services.key
+COPY srcs/supervisord.conf /etc/
+COPY srcs/setup.sh /tmp/
+COPY srcs/liveness.sh /tmp/
+
+RUN ssh-keygen -A
+RUN chmod +x /tmp/*.sh
 
 EXPOSE 80 443 22
 
-CMD nginx -g "daemon off;"
+CMD ["sh", "-c", "/tmp/setup.sh ; /usr/bin/supervisord -c /etc/supervisord.conf"]

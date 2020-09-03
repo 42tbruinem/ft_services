@@ -22,10 +22,12 @@ COPY ./srcs/nginx.conf /etc/nginx.conf
 COPY ./srcs/supervisord.conf /etc/supervisord.conf
 COPY ./srcs/setup.sh /tmp
 COPY ./srcs/get_external-ip-address.sh /tmp
+COPY /srcs/liveness.sh /tmp/
 
 # Make sure that our ssh daemon keeps restarting
 
 RUN chmod +x /tmp/setup.sh
+RUN chmod +x /tmp/liveness.sh
 RUN chmod +x /tmp/get_external-ip-address.sh
 RUN sed -i 's/;daemonize = yes/daemonize = no/g' /etc/php7/php-fpm.conf
 

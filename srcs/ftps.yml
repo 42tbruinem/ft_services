@@ -25,7 +25,7 @@ spec:
     kind: Service
     metadata:
       annotations:
-        metallb.universe.tf/address-pool: ftps-ip
+        metallb.universe.tf/address-pool: default
       labels:
         app: ftps
       name: ftps-svc
