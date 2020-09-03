@@ -59,6 +59,7 @@ fi
 
 
 kubectl apply -f ./srcs/metallb-config.yml
+kubectl apply -f ./srcs/read-service-permissions.yml
 start_app "nginx" "./srcs/nginx" "./srcs/nginx.yml" "$DEBUG"
 start_app "ftps" "./srcs/ftps" "./srcs/ftps.yml" "$DEBUG"
 start_app "mysql" "./srcs/mysql" "./srcs/mysql.yml" "$DEBUG"
