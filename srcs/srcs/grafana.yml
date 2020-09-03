@@ -12,7 +12,7 @@ kind: Deployment
 metadata:
   labels:
     app: grafana
-  name: grafana-deployment
+  name: grafana
 spec:
   replicas: 1
   selector:

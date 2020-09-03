@@ -1,9 +1,18 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ftps-secret
+type: Opaque
+stringData:
+  FTPS_USER: user
+  FTPS_PASS: pass
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app: ftps
-  name: ftps-deployment
+  name: ftps
 spec:
   replicas: 1
   selector:
@@ -20,6 +29,9 @@ spec:
       - image: ftps
         name: ftps
         imagePullPolicy: Never
+        envFrom:
+          - secretRef:
+              name: ftps-secret
 ---
     apiVersion: v1
     kind: Service

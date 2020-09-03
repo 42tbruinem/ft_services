@@ -15,9 +15,7 @@ COPY ./srcs/vsftpd.conf /tmp/vsftpd.conf
 COPY ./srcs/ftps.cert /etc/ssl/certs/ftps.cert
 COPY ./srcs/ftps.key /etc/ssl/certs/ftps.key
 
-RUN	mkdir -p /var/ftp && \
-	adduser -D -h /var/ftp ftps_user && \
-	echo "ftps_user:pass" | chpasswd
+RUN	mkdir -p /var/ftp
 
 RUN chmod +x /tmp/get_external-ip-address.sh
 RUN chmod +x /tmp/setup.sh

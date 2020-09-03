@@ -100,7 +100,7 @@
 			  {
 				"key": "deployment_name",
 				"operator": "=",
-				"value": "wordpress-deployment"
+				"value": "wordpress"
 			  }
 			]
 		  }

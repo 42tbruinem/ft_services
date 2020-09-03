@@ -14,11 +14,11 @@ metadata:
   annotations:
     metallb.universe.tf/address-pool: default
   labels:
-    app: wordpress-deployment
+    app: wordpress
 spec:
   type: LoadBalancer
   selector:
-    app: wordpress-deployment
+    app: wordpress
   ports:
   - name: wordpress-port
     port: 5050
@@ -27,19 +27,19 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wordpress-deployment
+  name: wordpress
   labels:
-    app: wordpress-deployment
+    app: wordpress
 spec:
   selector:
     matchLabels:
-      app: wordpress-deployment
+      app: wordpress
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: wordpress-deployment
+        app: wordpress
     spec:
       containers:
       - name: wordpress

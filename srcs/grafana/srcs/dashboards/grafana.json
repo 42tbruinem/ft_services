@@ -100,7 +100,7 @@
 			  {
 				"key": "deployment_name",
 				"operator": "=",
-				"value": "grafana-deployment"
+				"value": "grafana"
 			  }
 			]
 		  }

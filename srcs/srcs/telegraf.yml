@@ -45,7 +45,7 @@ kind: Deployment
 metadata:
   labels:
     app: telegraf
-  name: telegraf-deployment
+  name: telegraf
 spec:
   replicas: 1
   selector:
