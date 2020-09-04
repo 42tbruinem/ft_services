@@ -8,9 +8,9 @@ It is also recommended to have at least *8GB* of RAM on your system.
 ## Index
 * [Introduction](#introduction)
 * [Objects](#objects)
-* [Minikube Introduction](#minikubeintroduction)
+* [Minikube Introduction](#minikube-introduction)
 * [Commands](#commands)
-* [Quick Start Guide](#quickstartguide)
+* [Quick Start Guide](#quick-start-guide)
 
 ## Introduction
 Ft_services consists of setting up an infrastructure of different services using Kubernetes. All the containers of these services should be built using [Alpine Linux](https://www.alpinelinux.org/) for performance reasons. The entire project should build itself with a *setup.sh* file.
@@ -37,14 +37,15 @@ A Pod is a group of one or more containers.
 **[Container](https://kubernetes.io/docs/concepts/containers/)**<br>
 Information and details of the container we'll be running.<br>
 The image we'll be running on the container, that's refered to by the tag you've given it.<br>
-Also by default the imagePullPolicy is set to Always by default, since normally you would pull images from a repository, we'll need to override this to Never.<br>
+By default the imagePullPolicy is set to `Always`, since normally you would pull images from a repository, we'll need to override this and set it to `Never`.<br>
 There are many optional settings we can supply aswell, for example:
-- we can mount things on the container, such as persistentvolumes or configmaps
-- we can add environment variables to the container
-- we can run probes on the container to check the health or other state related things
+- You can mount things on the container, such as persistentvolumes or configmaps.
+- You can add environment variables to the container.
+- You can run probes on the container to check the health or other state related things.
 
 **[Secret](https://kubernetes.io/docs/concepts/configuration/secret/)**<br>
-Secrets let you store sensitive information, such as user credentials and passwords. It can be referenced to create an environment variable from the secret
+Secrets let you store sensitive information, such as user credentials and passwords.<br>
+It can be referenced to create an environment variable from the secret.
 
 **[Service](https://kubernetes.io/docs/concepts/services-networking/service/)**<br>
 A reliable way to expose an application as a network service using an external IP adress or a clusterIP (virtual IP used to communicate between pods).<br> It is possible to communicate between pods without a service, but you would be required to have the clusterIP of the pod in question.
@@ -75,7 +76,7 @@ Storage that will persist between pod crashes, as its lifetime is independent of
 **[PersistentVolumeClaim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)**<br>
 Used to bind a PersistentVolume with a pod.
 
-## MinikubeIntroduction
+## Minikube Introduction
 [Minikube](https://kubernetes.io/docs/setup/learning-environment/minikube/) is a way to host a kubernetes cluster, this variant will only have 1 node, as opposed to [kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/) which is used to host a cluster consisting of multiple nodes.<br>
 When starting the minikube cluster we can supply a bunch of arguments, some relating to resource usage which you can sort of tune to your liking.<br>
 What we're most interested in are the addons that minikube has to offer, all of these could be installed through different steps as well, but we're going to take advantage of the fact that we're running minikube and enable them from the start.
@@ -120,7 +121,7 @@ delete the object of the specified type. for example `kubectl delete svc wordpre
 You can also use `--all` instead of `OBJECT_NAME`.
 > :warning: Using `--all` is not recommended with `svc` as `OBJECT` as this will destroy your kubernetes service, which results in the demise of your cluster. You will have to `minikube delete` and rerun `setup.sh`.
 
-## QuickStartGuide
+## Quick Start Guide
 1. Create a dockerfile, add the base image with the `FROM` tag and built it with `docker build -t IMAGENAME`.
 2. Google how to install the desired application on *Alpine Linux* and try to run it using `docker run -it IMAGENAME`.
 3. Look up what configuration you would need for your application to run as desired.
