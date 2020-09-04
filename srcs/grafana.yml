@@ -12,6 +12,7 @@ stringData:
   GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/overview.json
   GF_USERS_LOGIN_HINT: "Vul jouw naampie is lekker in hiero"
   GF_USERS_PASSWORD_HINT: "JIJ SPEELT MET MIJN PRIVE!!!"
+  HOSTNAME: http://grafana-svc:3000
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -37,9 +38,6 @@ spec:
               name: influxdb-secret
           - secretRef:
               name: grafana-secret
-        env:
-          - name: HOSTNAME
-            value: http://grafana-svc:3000
         name: grafana
         imagePullPolicy: Never
 ---

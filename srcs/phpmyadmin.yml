@@ -17,6 +17,8 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  labels:
+    app: phpmyadmin
   name: phpmyadmin
 spec:
   replicas: 1
