@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: Secret
 metadata:
+  labels:
+    app: influxdb
   name: influxdb-secret
 type: Opaque
 stringData:
@@ -70,6 +72,8 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  labels:
+    app: influxdb
   name: influxdb-claim
 spec:
   selector:

@@ -1,6 +1,8 @@
 apiVersion: v1
 kind: Secret
 metadata:
+  labels:
+    app: wordpress
   name: wordpress-secret
 type: Opaque
 stringData:
