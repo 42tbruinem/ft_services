@@ -11,6 +11,10 @@ END=$'\e[0m'
 
 #------------------------------------FUNCTIONS------------------------------------#
 
+print_ip() {
+	echo -n "http://" ; kubectl get svc | grep "$1" | awk '{printf "%s",$4}' ; echo -n ":" ; kubectl get svc | grep "$1" | awk '{print $5}' | cut -d ':' -f 1
+}
+
 # $1 = name, $2 = docker-location, $3 = yml-location, $4 = DEBUG
 start_app () {
 	printf "$1: "
@@ -57,10 +61,8 @@ else
 	DEBUG=0
 fi
 
-
 kubectl apply -f ./srcs/metallb-config.yml
 kubectl apply -f ./srcs/read-service-permissions.yml
-start_app "nginx" "./srcs/nginx" "./srcs/nginx.yml" "$DEBUG"
 start_app "ftps" "./srcs/ftps" "./srcs/ftps.yml" "$DEBUG"
 start_app "mysql" "./srcs/mysql" "./srcs/mysql.yml" "$DEBUG"
 start_app "wordpress" "./srcs/wordpress" "./srcs/wordpress.yml" "$DEBUG"
@@ -68,3 +70,10 @@ start_app "phpmyadmin" "./srcs/phpmyadmin" "./srcs/phpmyadmin.yml" "$DEBUG"
 start_app "influxdb" "./srcs/influxdb" "./srcs/influxdb.yml" "$DEBUG"
 start_app "telegraf" "./srcs/telegraf" "./srcs/telegraf.yml" "$DEBUG"
 start_app "grafana" "./srcs/grafana" "./srcs/grafana.yml" "$DEBUG"
+start_app "nginx" "./srcs/nginx" "./srcs/nginx.yml" "$DEBUG"
+
+echo ""
+print_ip "nginx-svc"
+print_ip "wordpress-svc"
+print_ip "phpmyadmin-svc"
+print_ip "grafana-svc"
