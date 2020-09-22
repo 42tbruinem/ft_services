@@ -32,40 +32,6 @@ data:
       tls_ca = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
       insecure_skip_verify = false
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: telegraf
-  name: telegraf
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: telegraf
-  template:
-    metadata:
-      labels:
-        app: telegraf
-    spec:
-      serviceAccount: telegraf-acc
-      volumes:
-      - name: telegraf-conf-vol
-        configMap:
-          name: telegraf-config
-      containers:
-      - image: telegraf
-        name: telegraf-pod
-        imagePullPolicy: Never
-        envFrom:
-          - secretRef:
-              name: influxdb-secret
-        volumeMounts:
-        - name: telegraf-conf-vol
-          mountPath: /etc/telegraf/telegraf.conf
-          subPath: telegraf.conf
-          readOnly: true
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -108,3 +74,37 @@ subjects:
 - kind: ServiceAccount
   name: telegraf-acc
   namespace: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: telegraf
+  name: telegraf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: telegraf
+  template:
+    metadata:
+      labels:
+        app: telegraf
+    spec:
+      serviceAccount: telegraf-acc
+      volumes:
+      - name: telegraf-conf-vol
+        configMap:
+          name: telegraf-config
+      containers:
+      - image: telegraf
+        name: telegraf-pod
+        imagePullPolicy: Never
+        envFrom:
+          - secretRef:
+              name: influxdb-secret
+        volumeMounts:
+        - name: telegraf-conf-vol
+          mountPath: /etc/telegraf/telegraf.conf
+          subPath: telegraf.conf
+          readOnly: true

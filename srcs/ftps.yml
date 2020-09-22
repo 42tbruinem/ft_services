@@ -9,6 +9,29 @@ stringData:
   FTPS_USER: user
   FTPS_PASS: pass
 ---
+    apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        metallb.universe.tf/address-pool: default
+      labels:
+        app: ftps
+      name: ftps-svc
+    spec:
+      ports:
+      - name: command-ctrl
+        port: 20
+        targetPort: 20
+      - name: data-transfer
+        port: 21
+        targetPort: 21
+      - name: pasv-port
+        port: 30000
+        targetPort: 30000
+      selector:
+        app: ftps
+      type: LoadBalancer
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,26 +57,3 @@ spec:
         envFrom:
           - secretRef:
               name: ftps-secret
----
-    apiVersion: v1
-    kind: Service
-    metadata:
-      annotations:
-        metallb.universe.tf/address-pool: default
-      labels:
-        app: ftps
-      name: ftps-svc
-    spec:
-      ports:
-      - name: command-ctrl
-        port: 20
-        targetPort: 20
-      - name: data-transfer
-        port: 21
-        targetPort: 21
-      - name: pasv-port
-        port: 30000
-        targetPort: 30000
-      selector:
-        app: ftps
-      type: LoadBalancer
