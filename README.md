@@ -1,7 +1,7 @@
 # ft_services
 > :warning:	**DISCLAIMER!**
 
-Ft_services is a demanding and resource intensive project, minikube and its dependencies/components can be run on windows, but Linux/Mac OS is recommended.
+Ft_services is a demanding and resource intensive project, minikube and its dependencies/components will either not work at all, or take a LOT of extra configuration to function on Windows, Linux/Mac OS is recommended/advised.
 
 It is also recommended to have at least *8GB* of RAM on your system.
 
